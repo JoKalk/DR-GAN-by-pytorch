@@ -4,9 +4,9 @@ import torch
 import datetime
 
 now = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-checkpoints = './checkpoints'
+checkpoints = './checkpoints' #"E:/Projekte/MasterThesis/Git/DR-GAN-by-pytorch/checkpoints"#
 checkpoints = os.path.join(checkpoints, now)
-result = './result'
+result = './result' #"E:/Projekte/MasterThesis/Git/DR-GAN-by-pytorch/result" #
 result = os.path.join(result, now)
 
 class BaseOptions(object):
@@ -16,18 +16,18 @@ class BaseOptions(object):
 
     def initialize(self):
 
-        self.parser.add_argument('--dataroot', default='cfp-dataset/Data/Images', help='path to images (should have subfolder train and test)')
-        self.parser.add_argument('--input_nc', type=int, default=3, help='# of input image channels')
-        self.parser.add_argument('--output_nc', type=int, default=3, help='# of output image channels')
+        self.parser.add_argument('--dataroot', default='E:/Projekte/MasterThesis/Datasets/Hippocampus_Multiple_slices', help='path to images (should have subfolder train and test)')
+        self.parser.add_argument('--input_nc', type=int, default=1, help='# of input image channels')
+        self.parser.add_argument('--output_nc', type=int, default=1, help='# of output image channels')
 
         self.parser.add_argument('--checkpoints_dir', type=str, default=checkpoints, help='models are saved here')
-        self.parser.add_argument('--pretrained_D', type=str, default=None, help='the name of the pretrained discrimiator model to be loaded.')
-        self.parser.add_argument('--pretrained_G', type=str, default=None, help='the name of the pretrained generator model to be loaded.')
+        self.parser.add_argument('--pretrained_D', type=str, default="E:/Projekte/MasterThesis/Git/DR-GAN-by-pytorch/checkpoints/2020-12-02_13-39-20/single/25_net_D.path", help='the name of the pretrained discrimiator model to be loaded.')
+        self.parser.add_argument('--pretrained_G', type=str, default="E:/Projekte/MasterThesis/Git/DR-GAN-by-pytorch/checkpoints/2020-12-02_13-39-20/single/25_net_G.path", help='the name of the pretrained generator model to be loaded.')
         self.parser.add_argument('--test_dir', type=str, default=result, help='the dir to save the result')
 
-        self.parser.add_argument('--model', type=str, default='multi', help='single/multi')
-        self.parser.add_argument('--N_p', type=int, default=2, help='the sum of the poses')
-        self.parser.add_argument('--N_d', type=int, default=450, help='the sum of the identities')
+        self.parser.add_argument('--model', type=str, default='single', help='single/multi')
+        self.parser.add_argument('--N_p', type=int, default=3, help='the sum of the poses')
+        self.parser.add_argument('--N_d', type=int, default=580, help='the sum of the identities')
         self.parser.add_argument('--N_z', type=int, default=50, help='the sum of the noise')
 
         self.parser.add_argument('--gpu_ids', type=str, default='0', help='gpu ids: e.g. 0  0,1,2, 0,2. use -1 for CPU')
@@ -58,7 +58,8 @@ class BaseOptions(object):
         print('-------------------End-------------------')
 
 
-        result_dir = os.path.join(self.opt.test_dir, self.opt.pretrained_G) if self.opt.pretrained_G else self.opt.test_dir
+        #result_dir = os.path.join(self.opt.test_dir, self.opt.pretrained_G) if self.opt.pretrained_G else self.opt.test_dir
+        result_dir = self.opt.test_dir
         if not os.path.exists(result_dir):
             os.makedirs(result_dir)
 

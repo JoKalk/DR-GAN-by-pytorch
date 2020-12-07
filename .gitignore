@@ -1,0 +1,4 @@
+result/*
+checkpoints/*
+logs/*
+**/*.pyc

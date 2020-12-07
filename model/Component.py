@@ -46,7 +46,8 @@ def weights_init_normal(m):
     elif isinstance(m, nn.Linear):
         init.uniform_(m.weight.data, 0.0, 0.02)
     elif isinstance(m, nn.BatchNorm2d):
-        init.uniform_(m.weight.data, 1.0, 0.02)
+        #init.uniform_(m.weight.data, 1.0, 0.02)
+        init.uniform_(m.weight.data, 0.02, 1)
         init.constant_(m.bias.data, 0.0)
 
 

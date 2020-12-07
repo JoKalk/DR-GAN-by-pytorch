@@ -4,6 +4,8 @@ from PIL import Image
 import matplotlib.pyplot as plt
 from torchvision import transforms
 import math
+import nibabel as nib
+import numpy as np
 
 IMG_EXTENSIONS = [
     '.jpg', '.JPG', '.jpeg', '.JPEG',
@@ -45,6 +47,50 @@ def make_dataset(dir):
                                 'name': fname})
 
     return images
+
+def make_dataset_nii(dir):
+        """Return a list that constains all the image paths in the given dir.
+
+        >>> dir = '/home/jaren/data/train'
+        >>> len(make_dataset(dir))
+        3566
+        >>> dir = '/home/jaren/data/test'
+        >>> len(make_dataset(dir))
+        2027
+        """
+        images = []
+        assert os.path.isdir(os.path.join(dir, 'images')), '%s is not a valid directory' %dir
+
+        for root, _, fnames in sorted(os.walk(os.path.join(dir, 'images'))):
+            for fname in fnames:
+                if fname.endswith(".nii.gz"):
+                    path = os.path.join(root, fname)
+                    id_loc = fname[1:]
+                    id_loc = id_loc.split("_")[0]
+                    id = int(id_loc)
+                    if fname.startswith("A"):
+                        pose = 0
+                    if fname.startswith("h"):
+                        pose = 1
+                    if fname.startswith("s"):
+                        pose = 2
+                    #pose = _getPose(os.path.join(dir, 'masks', fname))#get_pose(path)
+                    images.append({'path': path,
+                                    'id': id,
+                                    'pose': pose,
+                                    'name': (fname.split(".")[0]).split("_")[1]}) # id and name switched
+
+        return images
+
+def _getPose(dir): # percentage of segmentation
+    data = nib.load(dir).get_fdata()
+    percentage = np.sum(data) / (np.shape(data)[0] * np.shape(data)[1])
+    percentage = percentage / 0.05
+    percentage = int(percentage)
+    if percentage >= 10:
+        return 10
+    else:
+        return percentage
 
 def split_with_same_id(samples):
     """

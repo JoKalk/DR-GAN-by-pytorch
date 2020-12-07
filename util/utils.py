@@ -12,7 +12,9 @@ class error(object):
         if os.path.exists(self.path):
             open(self.path, 'w').close()    #clear the content of the txt file.
         else:
-            os.mknod(self.path)
+             open(self.path, 'w').close()
+            #os.
+            #os.mknod(self.path)
 
 
     def initialize(self):

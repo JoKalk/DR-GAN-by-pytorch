@@ -9,7 +9,8 @@ class BaseModel(object):
 		self.gpu_ids = opt.gpu_ids
 		self.is_Train = opt.is_Train
 		self.save_dir = os.path.join(opt.checkpoints_dir, opt.model)
-		self.result_dir = os.path.join(opt.test_dir, opt.pretrained_G) if opt.pretrained_G else opt.test_dir
+		#self.result_dir = os.path.join(opt.test_dir, opt.pretrained_G) if opt.pretrained_G else opt.test_dir
+		self.result_dir = opt.test_dir
 
 	# helper saving function that can be used by subclasses
 	def save_network(self,network, network_label, epoch_label, gpu_ids):
